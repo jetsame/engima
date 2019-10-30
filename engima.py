@@ -1,5 +1,5 @@
 # coding=utf-8
-import random
+global newed
 
 # positions of rotors
 alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -8,12 +8,6 @@ characters = [[4, 10, 12, 5, 11, 6, 3, 16, 21, 25, 13, 19, 14, 22, 24, 7, 23, 20
               [0, 9, 3, 10, 18, 8, 17, 20, 23, 1, 11, 7, 22, 19, 12, 2, 16, 6, 25, 13, 15, 24, 5, 21, 14, 4],  # R2
               [1, 3, 5, 7, 9, 11, 2, 15, 17, 19, 23, 21, 25, 13, 24, 4, 8, 22, 6, 0, 10, 12, 20, 18, 16, 14],  # R3
               [24, 17, 20, 7, 16, 18, 11, 3, 15, 23, 13, 6, 14, 10, 12, 8, 4, 1, 5, 25, 2, 22, 21, 9, 0, 19]]  # REF
-
-# letters for each rotor
-random1, random2, random3 = random.randrange(0, 25), random.randrange(0, 25), random.randrange(0, 25)
-print(random1, '    ', random2, '    ', random3)
-global newed
-
 
 def limit(x):
     """
@@ -31,6 +25,17 @@ def limit(x):
 
 # function that helps with going beyond
 
+def need(x1, x2):
+  """
+  :param x1: first value
+  :param x2: second value
+  :return: depending on the sign of the number
+  """
+  if x1 - x2 < 0:
+    return 26 + (x1 - x2)
+  return 26 - (x1 - x2)
+
+
 def encryptndecrypt(letters, word):
     """
     :param letters: letter of alphabet in massive
@@ -46,17 +51,9 @@ def encryptndecrypt(letters, word):
     offset3 = [attlist[c3] for c3 in characters[2]]
     reflector = [attlist[c4] for c4 in characters[3]]
 
+    random1, random2, random3 = 6, 13, 2
+    
     for i in word:
-
-        def need(x1, x2):
-            """
-            :param x1: first value
-            :param x2: second value
-            :return: depending on the sign of the number
-            """
-            if x1 - x2 < 0:
-                return 26 + (x1 - x2)
-            return 26 - (x1 - x2)
 
         if i != ' ':
             idofletter = alphabet.index(i)
@@ -82,13 +79,22 @@ def encryptndecrypt(letters, word):
             operation01 = limit(bwoperation3 - random1)
             bwoperation0 = attlist[operation01]
             newed.append(bwoperation0)
+            
+            length = 0
+            while length < len(word):
+                random1 += 1
+                random2 += 1
+                random3 += 1
+                if length == 0:
+                    break
 
         else:
             print('')
             newed.append(' ')
+    
     print(''.join(newed))
 
 
 # main function/brain of program
 
-encryptndecrypt(alphabet, 'GITHUB')
+encryptndecrypt(alphabet, 'MATH BUS')
